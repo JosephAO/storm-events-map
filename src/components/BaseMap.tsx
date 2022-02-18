@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef } from "react";
 import MapView from "@arcgis/core/views/MapView";
 import ArcGISMap from "@arcgis/core/Map";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
@@ -26,16 +26,6 @@ function BaseMap() {
 	var thisMap = new ArcGISMap({
 		basemap: "gray-vector"
 	});
-
-	// const [thisMap, setThisMap] = useState<ArcGISMap>(
-	// 	new ArcGISMap({
-	// 		basemap: "gray-vector"
-	// 	})
-	// );
-
-	useEffect(() => {
-		initMap();
-	}, [thisMap]);
 
 	const getData = async () => {
 		const url =
@@ -85,7 +75,7 @@ function BaseMap() {
 
 	const initMap = () => {
 		if (mapDiv.current) {
-			const view = new MapView({
+			new MapView({
 				container: mapDiv.current,
 				map: thisMap,
 				center: [-80.793457, 35.782169],
@@ -94,7 +84,7 @@ function BaseMap() {
 		}
 	};
 
-	getData();
+	getData().then(() => initMap());
 
 	return <div className="mapDiv" ref={mapDiv} />;
 }
